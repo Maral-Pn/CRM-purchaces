@@ -12,7 +12,7 @@ def writer(spark : SparkSession, table_name: str, file_name:str):
         .load()
 
     df.show()
-    df.write.option("inferSchema", True).option("header", True).parquet( "../delta_lake/bronze_layer/" + file_name)
+    df.write.option("inferSchema", True).option("header", True).parquet( "../data_lake/bronze_layer/" + file_name)
 
 if __name__ == "__main__":
 
