@@ -1,8 +1,7 @@
-
 from pyspark.sql import SparkSession
-import pyspark as ps
-def writer(spark : SparkSession, table_name: str, file_name:str):
-    df = spark.read \
+
+def writer(spark_session : SparkSession, table_name: str, file_name:str):
+    df = spark_session.read \
         .format("jdbc") \
         .option("driver", "com.mysql.jdbc.Driver") \
         .option("url", "jdbc:mysql://localhost/retail_db") \
@@ -12,7 +11,11 @@ def writer(spark : SparkSession, table_name: str, file_name:str):
         .load()
 
     df.show()
-    df.write.option("inferSchema", True).option("header", True).parquet( "../data_lake/bronze_layer/" + file_name)
+    (df.write
+     .option("inferSchema", True)
+     .option("header", True)
+     .mode("overwrite")
+     .parquet( "../data_lake/bronze_layer/" + file_name))
 
 if __name__ == "__main__":
 
